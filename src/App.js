@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Content } from './components/Content.js'
 import { PageProvider } from "./contexts/PageContext.js"
 import { useUser } from './contexts/User'
+import ToolBar from './components/ToolBar.js';
 
 import './style/bootstrap.css';
 import './style/custom.css';
 
-/* Defines the toolbar items */
 const toolItems = [
 	{
 		id: 1,
@@ -29,22 +29,12 @@ const toolItems = [
 		url: "#4",
 	},
 ]
-/* const toolItems = []; */
 
-function showUser(user){
-	console.log(user)
-}
 function App() {
-	const [currentPage, setCurrentPage] = useState(0)
-	const [toolBar, setToolBar] = useState(toolItems)
 	const user = useUser()
-	showUser(user)
 
 	return user ? (
-		<PageProvider currentPage={currentPage}>
-			<Content
-				changePage={(i) => setCurrentPage(i)}
-			/>
+		<PageProvider>
 		</PageProvider>
 	) : (
 		<div></div>

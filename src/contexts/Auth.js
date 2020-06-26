@@ -12,8 +12,20 @@ function AuthProvider(props) {
 	// while we go retrieve that user's information.
 
 	const data = { user: "João Vitor Leone" }
-	const login = () => { } // make a login request
+
+	const login = (email, password) => {
+		console.log("Email: " + email + " - Senha: " + password)
+		fetch('http://127.0.0.1:8000/api/users/')
+			.then((response) => {
+				return response.json()
+			})
+			.then((data) => {
+				console.log(data)
+			})
+	} // make a login request
+
 	const register = () => { } // register the user
+
 	const logout = () => { } // clear the token in localStorage and the user data
 	// note, I'm not bothering to optimize this `value` with React.useMemo here
 	// because this is the top-most component rendered in our app and it will very
