@@ -15,13 +15,21 @@ function AuthProvider(props) {
 
 	const login = (email, password) => {
 		console.log("Email: " + email + " - Senha: " + password)
-		fetch('http://127.0.0.1:8000/api/users/')
-			.then((response) => {
-				return response.json()
-			})
-			.then((data) => {
-				console.log(data)
-			})
+		const body = {email: email, senha: password}
+
+		const options = {
+			headers: new Headers({'content-type': 'application/json'}),
+			method: "POST",
+			body: JSON.stringify(body),
+		}
+
+		fetch('http://127.0.0.1:8000/api/login/', options)
+		.then((response) => {
+			return response.json()
+		})
+		.then((data) => {
+			console.log(data)
+		})
 	} // make a login request
 
 	const register = () => { } // register the user
