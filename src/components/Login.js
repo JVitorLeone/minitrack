@@ -15,24 +15,24 @@ function LoginComponent(props) {
 					<p className="h3 font-weight-bold ">Entrar</p>
 				</div>
 				<label htmlFor="inputEmail" className="sr-only">Usuário</label>
-					<input
-						type="text"
-						className="form-control"
-						placeholder="Email"
-						name="email"
-						onChange={ props.handleChange }
-						value={ props.values.email }
-						required
-					/>
+				<input
+					type="text"
+					className="form-control"
+					placeholder="Email"
+					name="email"
+					onChange={ props.handleChange }
+					value={ props.values.email }
+					required
+				/>
 				<label htmlFor="inputPassword" className="sr-only">Senha</label>
-					<input
-						type="password"
-						className="form-control"
-						placeholder="Password"
-						name="password"
-						onChange={ props.handleChange }
-						value={ props.values.password }
-						required
+				<input
+					type="password"
+					className="form-control"
+					placeholder="Password"
+					name="password"
+					onChange={ props.handleChange }
+					value={ props.values.password }
+					required
 				/>
 				<input
 					type="submit"
@@ -40,6 +40,12 @@ function LoginComponent(props) {
 					id="btnEntrar"
 					value="Entrar"
 				/>
+				<button
+					onClick={props.clearStorage}
+					value="Limpar storage"
+				>
+					limpar
+				</button>
 				<hr className="my-3 color-light"></hr>
 				<p className="small">Ainda não é cadastrado?</p>
 				<a className="btn btn-outline-custom" id="btnCadastro" href="#">Cadastrar</a>
@@ -55,12 +61,13 @@ export function LoginScreen(props) {
 
 	const auth = useAuth()
 
+	// Consider using useEffet hook to handle dismount
 	const handleSubmit = e => {
 		e.preventDefault()
 
 		setIsLoading(true)
 
-		const login = auth.login(values.email, values.password)
+		auth.login(values.email, values.password)
 			.then(response => {
 				console.log(response)
 				console.log("login - chegou")
@@ -80,13 +87,14 @@ export function LoginScreen(props) {
 
 	return (
 		<div className="form-signin">
-			{isLoading?(
+			{ isLoading ? (
 				<div>Carregando...</div>
 			):(
 				<LoginComponent
 					values={values}
 					handleChange={handleChange}
 					handleSubmit={handleSubmit}
+					clearStorage={() => auth.logout()}
 				/>
 			)}
 		</div>
