@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/Auth'
 
 function LoginComponent(props) {
@@ -9,7 +9,7 @@ function LoginComponent(props) {
 				className="text-center"
 				id="loginContainer"
 				method="POST"
-				onSubmit={ props.login }
+				onSubmit={ props.handleSubmit }
 			>
 				<div className="header bg-dark-custom mb-4 gradient-dark">
 					<p className="h3 font-weight-bold ">Entrar</p>
@@ -49,31 +49,46 @@ function LoginComponent(props) {
 }
 
 export function LoginScreen(props) {
+
 	const [values, setValues] = useState({email: '', password: ''})
+	const [isLoading, setIsLoading] = useState(false)
 
 	const auth = useAuth()
 
-	const login = e => {
+	const handleSubmit = e => {
 		e.preventDefault()
-		auth.login(values.email, values.password)
+
+		setIsLoading(true)
+
+		const login = auth.login(values.email, values.password)
+			.then(response => {
+				console.log(response)
+				console.log("login - chegou")
+				setIsLoading(false)
+			})
+
+		return
 	}
 
 	const handleChange = e => {
-        const { name, value } = e.target;
-        setValues(prevState => ({
-            ...prevState,
-            [name]: value
+		const { name, value } = e.target;
+		setValues(prevState => ({
+			...prevState,
+			[name]: value
 		}));
-		console.log(values)
 	};
 
 	return (
 		<div className="form-signin">
-			<LoginComponent
-				values={values}
-				handleChange={handleChange}
-				login={login}
-			/>
+			{isLoading?(
+				<div>Carregando...</div>
+			):(
+				<LoginComponent
+					values={values}
+					handleChange={handleChange}
+					handleSubmit={handleSubmit}
+				/>
+			)}
 		</div>
 	)
 }

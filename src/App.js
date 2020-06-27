@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { Content } from './components/Content.js'
+import React from 'react';
 import { PageProvider } from "./contexts/PageContext.js"
 import { useUser } from './contexts/User'
 import ToolBar from './components/ToolBar.js';
@@ -34,10 +33,13 @@ function App() {
 	const user = useUser()
 
 	return user ? (
+		<div>
+			<ToolBar toolBar={toolItems} />
+			Bem vindo
+		</div>
+	) : (
 		<PageProvider>
 		</PageProvider>
-	) : (
-		<div></div>
 	)
 }
 
