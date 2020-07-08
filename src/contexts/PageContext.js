@@ -1,7 +1,9 @@
 import React from 'react';
 import { LoginScreen } from '../components/Login'
+import Teste from '../components/Teste'
 
 export const pages = [
+	(<Teste />),
 	(<LoginScreen />),
 	(<div> Componente 1 </div>),
 	(<div> Componente 2 </div>),
@@ -33,7 +35,7 @@ const toolItems = [
 ]
 
 const PageContext = React.createContext(
-	pages[0] // default value
+	pages[1] // default value
 );
 
 function PageProvider() {

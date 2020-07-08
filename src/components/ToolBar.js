@@ -26,9 +26,6 @@ export default class ToolBar extends React.Component {
 		const { toolBar } = this.props;
 		var toolBarItems;
 
-		console.log(Array.isArray(toolBar))
-		console.log(toolBar.length)
-
 		if (Array.isArray(toolBar) && toolBar.length) {
 			toolBarItems = toolBar.map((item) => {
 				return (
@@ -41,14 +38,12 @@ export default class ToolBar extends React.Component {
 					/>
 				);
 			});
-			console.log("toolbar")
 			return (
 				<div className="sidebar">
 					{toolBarItems}
 				</div>
 			);
 		} else {
-			console.log(" not toolbar")
 			toolBarItems = null
 			return toolBarItems
 		}

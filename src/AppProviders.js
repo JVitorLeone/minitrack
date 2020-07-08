@@ -5,7 +5,7 @@ import { UserProvider } from './contexts/User'
 function AppProviders({ children }) {
 	return (
 		<AuthProvider>
-			<UserProvider>{children}</UserProvider>
+			{children}
 		</AuthProvider>
 	)
 }

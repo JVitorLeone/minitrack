@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/Auth'
 
+/*
+	TODO
+	- Adicionar símbolo de carregando...
+	- Mensagens de erro e sucesso
+
+ */
+
 function LoginComponent(props) {
 
 	return (
@@ -14,14 +21,14 @@ function LoginComponent(props) {
 				<div className="header bg-dark-custom mb-4 gradient-dark">
 					<p className="h3 font-weight-bold ">Entrar</p>
 				</div>
-				<label htmlFor="inputEmail" className="sr-only">Usuário</label>
+				<label htmlFor="inputEmail" className="sr-only">UsuÃ¡rio</label>
 				<input
 					type="text"
 					className="form-control"
 					placeholder="Email"
 					name="email"
 					onChange={ props.handleChange }
-					value={ props.values.email }
+					value={ props.credentials.email }
 					required
 				/>
 				<label htmlFor="inputPassword" className="sr-only">Senha</label>
@@ -31,7 +38,7 @@ function LoginComponent(props) {
 					placeholder="Password"
 					name="password"
 					onChange={ props.handleChange }
-					value={ props.values.password }
+					value={ props.credentials.password }
 					required
 				/>
 				<input
@@ -47,7 +54,7 @@ function LoginComponent(props) {
 					limpar
 				</button>
 				<hr className="my-3 color-light"></hr>
-				<p className="small">Ainda não é cadastrado?</p>
+				<p className="small">Ainda nÃ£o Ã© cadastrado?</p>
 				<a className="btn btn-outline-custom" id="btnCadastro" href="#">Cadastrar</a>
 			</form>
 		</div>
@@ -56,7 +63,7 @@ function LoginComponent(props) {
 
 export function LoginScreen(props) {
 
-	const [values, setValues] = useState({email: '', password: ''})
+	const [credentials, setCredentials] = useState({email: '', password: ''})
 	const [isLoading, setIsLoading] = useState(false)
 
 	const auth = useAuth()
@@ -67,19 +74,34 @@ export function LoginScreen(props) {
 
 		setIsLoading(true)
 
-		auth.login(values.email, values.password)
-			.then(response => {
-				console.log(response)
-				console.log("login - chegou")
-				setIsLoading(false)
-			})
+		const options = {
+			method: "POST",
+			headers: new Headers({'content-type': 'application/json'}),
+			body: JSON.stringify(credentials),
+		}
+
+		fetch('/api/login_jwt/', options)
+			.then(res =>  res.json())
+			.then((token) => {
+					if (token.erro) {
+						console.log("Erro: " + token.erro)
+					} else {
+						auth.login(token);
+					}
+					setIsLoading(false);
+				},
+				(error) => {
+					console.log(error);
+					setIsLoading(false);
+				}
+			);
 
 		return
 	}
 
 	const handleChange = e => {
 		const { name, value } = e.target;
-		setValues(prevState => ({
+		setCredentials(prevState => ({
 			...prevState,
 			[name]: value
 		}));
@@ -91,7 +113,7 @@ export function LoginScreen(props) {
 				<div>Carregando...</div>
 			):(
 				<LoginComponent
-					values={values}
+					credentials={credentials}
 					handleChange={handleChange}
 					handleSubmit={handleSubmit}
 					clearStorage={() => auth.logout()}
