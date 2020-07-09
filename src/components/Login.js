@@ -21,7 +21,7 @@ function LoginComponent(props) {
 				<div className="header bg-dark-custom mb-4 gradient-dark">
 					<p className="h3 font-weight-bold ">Entrar</p>
 				</div>
-				<label htmlFor="inputEmail" className="sr-only">UsuÃ¡rio</label>
+				<label htmlFor="inputEmail" className="sr-only">Usuário</label>
 				<input
 					type="text"
 					className="form-control"
@@ -54,7 +54,7 @@ function LoginComponent(props) {
 					limpar
 				</button>
 				<hr className="my-3 color-light"></hr>
-				<p className="small">Ainda nÃ£o Ã© cadastrado?</p>
+				<p className="small">Ainda não é cadastrado?</p>
 				<a className="btn btn-outline-custom" id="btnCadastro" href="#">Cadastrar</a>
 			</form>
 		</div>
@@ -63,30 +63,41 @@ function LoginComponent(props) {
 
 export function LoginScreen(props) {
 
-	const [credentials, setCredentials] = useState({email: '', password: ''})
-	const [isLoading, setIsLoading] = useState(false)
+	const [didMount, setDidMount] = useState(false);
 
-	const auth = useAuth()
+	useEffect(() => {
+		setDidMount(true);
+		return () => setDidMount(false);
+	}, [])
+
+	const [credentials, setCredentials] = useState({email: '', password: ''});
+	const [isLoading, setIsLoading] = useState(false);
+
+	const auth = useAuth();
 
 	// Consider using useEffet hook to handle dismount
 	const handleSubmit = e => {
-		e.preventDefault()
+		e.preventDefault();
 
-		setIsLoading(true)
+		setIsLoading(true);
 
 		const options = {
 			method: "POST",
 			headers: new Headers({'content-type': 'application/json'}),
 			body: JSON.stringify(credentials),
-		}
+		};
 
-		fetch('/api/login_jwt/', options)
-			.then(res =>  res.json())
-			.then((token) => {
-					if (token.erro) {
-						console.log("Erro: " + token.erro)
+		fetch('http://127.0.0.1:8000/api/loginJWT/', options)
+			.then(res =>  {
+				return didMount ? res.json() : null;
+			})
+			.then((res) => {
+					if (res.erro) {
+						console.log("Erro: " + res.erro);
 					} else {
-						auth.login(token);
+						console.log("token: " + res.token);
+						console.log(res.user);
+						auth.login(res.token);
 					}
 					setIsLoading(false);
 				},

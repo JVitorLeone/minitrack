@@ -9,10 +9,12 @@ function AuthProvider(props) {
 
 	const login = token => {
 		tokenProvider.setToken(token);
+		setIsLoggedIn(true);
 	};
 
 	const logout = () => {
 		tokenProvider.setToken(null);
+		setIsLoggedIn(false);
 	};
 
 	const authFetch = async (input, init) => {
@@ -28,12 +30,12 @@ function AuthProvider(props) {
 		return fetch(input, init)
 	}
 
-	useEffect(() => {
-        setIsLoggedIn(tokenProvider.isLoggedIn());
-    }, []);
+	const isLogged = () => {
+		return isLoggedIn;
+	}
 
 	return (
-		<AuthContext.Provider value={{ login, logout, isLoggedIn, authFetch }} {...props}/>
+		<AuthContext.Provider value={{ login, logout, isLogged, authFetch }} {...props}/>
 	)
 }
 const useAuth = () => React.useContext(AuthContext)

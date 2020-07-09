@@ -1,46 +1,23 @@
-import React from 'react';
-import { PageProvider } from "./contexts/PageContext.js"
+import React, {useState} from 'react';
+import { PageProvider } from "./contexts/PageContext"
 import { useUser } from './contexts/User'
-import ToolBar from './components/ToolBar.js';
+import { useAuth } from './contexts/Auth'
+import { LoginScreen } from './components/Login'
 
 import './style/bootstrap.css';
 import './style/custom.css';
 
-const toolItems = [
-	{
-		id: 1,
-		iconName: "home",
-		url: "#1",
-	},
-	{
-		id: 2,
-		iconName: "message-square",
-		url: "#2",
-	},
-	{
-		id: 3,
-		iconName: "tool",
-		url: "#3",
-	},
-	{
-		id: 4,
-		iconName: "log-out",
-		url: "#4",
-	},
-]
-
 function App() {
-	const user = useUser()
+	const auth = useAuth();
+	const [currentPage, setCurrentPage] = useState(1);
+	const [user, setUser] = useState(useUser());
 
-	return user ? (
-		<div>
-			<ToolBar toolBar={toolItems} />
-			Bem vindo
-		</div>
+	console.log(auth.isLogged());
+	return auth.isLogged() ? (
+		<PageProvider page={currentPage}/>
 	) : (
-		<PageProvider>
-		</PageProvider>
-	)
+		<LoginScreen />
+	);
 }
 
 export default App;

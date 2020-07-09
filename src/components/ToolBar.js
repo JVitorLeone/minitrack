@@ -1,5 +1,54 @@
 import React from 'react';
 
+const toolItems = [
+	{
+		id: 1,
+		iconName: "home",
+		url: "#1",
+	},
+	{
+		id: 2,
+		iconName: "message-square",
+		url: "#2",
+	},
+	{
+		id: 3,
+		iconName: "tool",
+		url: "#3",
+	},
+	{
+		id: 4,
+		iconName: "log-out",
+		url: "#4",
+	},
+];
+
+function ToolBar(props)  {
+
+	if (Array.isArray(toolItems) && toolItems.length) {
+		const toolBarItems = toolItems.map((item) => {
+			return (
+				<ToolItem
+					key={item.id}
+					url={item.url}
+					isActive={this.props.activePage === item.id}
+					onClick={() => this.props.onClick(item.id)}
+					iconName={item.iconName}
+				/>
+			);
+		});
+
+		return (
+			<div className="sidebar">
+				{toolBarItems}
+			</div>
+		);
+	} else {
+		return null;
+	}
+
+}
+
 class ToolItem extends React.Component {
 	render() {
 		const active = this.props.isActive ? "sidebar-link sidebar-active" : "sidebar-link";
@@ -18,36 +67,6 @@ class ToolItem extends React.Component {
 				</button>
 			</div>
 		);
-	}
-}
-
-export default class ToolBar extends React.Component {
-	render() {
-		const { toolBar } = this.props;
-		var toolBarItems;
-
-		if (Array.isArray(toolBar) && toolBar.length) {
-			toolBarItems = toolBar.map((item) => {
-				return (
-					<ToolItem
-						key={item.id}
-						url={item.url}
-						isActive={this.props.activePage === item.id}
-						onClick={() => this.props.onClick(item.id)}
-						iconName={item.iconName}
-					/>
-				);
-			});
-			return (
-				<div className="sidebar">
-					{toolBarItems}
-				</div>
-			);
-		} else {
-			toolBarItems = null
-			return toolBarItems
-		}
-
 	}
 }
 
