@@ -47,12 +47,6 @@ function LoginComponent(props) {
 					id="btnEntrar"
 					value="Entrar"
 				/>
-				<button
-					onClick={props.clearStorage}
-					value="Limpar storage"
-				>
-					limpar
-				</button>
 				<hr className="my-3 color-light"></hr>
 				<p className="small">Ainda não é cadastrado?</p>
 				<a className="btn btn-outline-custom" id="btnCadastro" href="#">Cadastrar</a>
@@ -87,7 +81,7 @@ export function LoginScreen(props) {
 			body: JSON.stringify(credentials),
 		};
 
-		fetch('http://127.0.0.1:8000/api/loginJWT/', options)
+		fetch('api/loginJWT/', options)
 			.then(res =>  {
 				return didMount ? res.json() : null;
 			})
@@ -127,7 +121,6 @@ export function LoginScreen(props) {
 					credentials={credentials}
 					handleChange={handleChange}
 					handleSubmit={handleSubmit}
-					clearStorage={() => auth.logout()}
 				/>
 			)}
 		</div>

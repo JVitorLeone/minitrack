@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { createTokenProvider } from './Token'
+import App from '../App';
 
 const AuthContext = React.createContext()
 
@@ -28,16 +29,17 @@ function AuthProvider(props) {
 		};
 
 		return fetch(input, init)
-	}
+	};
 
-	const isLogged = () => {
-		return isLoggedIn;
-	}
+	const isLogged = isLoggedIn;
 
 	return (
-		<AuthContext.Provider value={{ login, logout, isLogged, authFetch }} {...props}/>
+		<AuthContext.Provider value={{ login, logout, authFetch }} {...props}>
+			<App isLogged={isLogged} />
+		</AuthContext.Provider>
 	)
 }
-const useAuth = () => React.useContext(AuthContext)
+
+const useAuth = () => React.useContext(AuthContext);
 
 export { AuthProvider, useAuth }

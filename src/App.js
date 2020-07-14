@@ -1,19 +1,16 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { PageProvider } from "./contexts/PageContext"
 import { useUser } from './contexts/User'
-import { useAuth } from './contexts/Auth'
 import { LoginScreen } from './components/Login'
 
 import './style/bootstrap.css';
 import './style/custom.css';
 
-function App() {
-	const auth = useAuth();
+function App(props) {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [user, setUser] = useState(useUser());
 
-	console.log(auth.isLogged());
-	return auth.isLogged() ? (
+	return props.isLogged ? (
 		<PageProvider page={currentPage}/>
 	) : (
 		<LoginScreen />

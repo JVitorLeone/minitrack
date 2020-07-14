@@ -14,7 +14,7 @@ import React, { useState } from 'react'
  */
 export const createTokenProvider = () => {
 
-	let tokenJWT = localStorage.getItem('@minitrack/JWT') || null;
+	let tokenJWT = localStorage.getItem('@minitrack/JWT');
 
 	const getToken = async () => {
 		if (!tokenJWT) {
