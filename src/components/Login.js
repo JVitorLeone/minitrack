@@ -57,51 +57,19 @@ function LoginComponent(props) {
 
 export function LoginScreen(props) {
 
-	const [didMount, setDidMount] = useState(false);
-
-	useEffect(() => {
-		setDidMount(true);
-		return () => setDidMount(false);
-	}, [])
-
+	const auth = useAuth();
 	const [credentials, setCredentials] = useState({email: '', password: ''});
 	const [isLoading, setIsLoading] = useState(false);
-
-	const auth = useAuth();
 
 	// Consider using useEffet hook to handle dismount
 	const handleSubmit = e => {
 		e.preventDefault();
 
 		setIsLoading(true);
-
-		const options = {
-			method: "POST",
-			headers: new Headers({'content-type': 'application/json'}),
-			body: JSON.stringify(credentials),
-		};
-
-		fetch('api/loginJWT/', options)
-			.then(res =>  {
-				return didMount ? res.json() : null;
+		loginAsync()
+			.then(() => {
+				setIsLoading(false);
 			})
-			.then((res) => {
-					if (res.erro) {
-						console.log("Erro: " + res.erro);
-					} else {
-						console.log("token: " + res.token);
-						console.log(res.user);
-						auth.login(res.token);
-					}
-					setIsLoading(false);
-				},
-				(error) => {
-					console.log(error);
-					setIsLoading(false);
-				}
-			);
-
-		return
 	}
 
 	const handleChange = e => {
@@ -110,7 +78,30 @@ export function LoginScreen(props) {
 			...prevState,
 			[name]: value
 		}));
-	};
+	}
+
+	const loginAsync = async () => {
+		const options = {
+			method: "POST",
+			headers: new Headers({'content-type': 'application/json'}),
+			body: JSON.stringify(credentials),
+		};
+
+		try {
+			let response = await fetch('/api/loginJWT/', options);
+			let data = await response.json();
+
+			if (data.erro) {
+				console.log("Erro: " + data.erro);
+			} else {
+				console.log("token: " + data.token);
+				console.log(data.user);
+				auth.login(data.token);
+			}
+		} catch(error)  {
+			console.log(error);
+		}
+	}
 
 	return (
 		<div className="form-signin">
