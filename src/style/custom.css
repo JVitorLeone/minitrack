@@ -298,18 +298,39 @@ input:focus{
 /*----------------------------- LOGIN --------------------------------------*/
 
 .form-signin {
+	position: relative;
 	width: 100%;
 	min-width: 300px;
 	max-width: 450px;
 	margin: auto;
 	margin-top: 80px;
-	padding: 0 15px 0 15px;
 }
 
 .form-signin .form-control {
 	position: relative;
 	box-sizing: border-box;
 	height: auto;
-	padding: 10px;
 	font-size: 16px;
+}
+
+.loader {
+	display: flex;
+	align-items: center;
+    justify-content: space-evenly;
+	z-index: 1000;
+	background-color: rgba(200,200,200,0.4);
+	position:absolute;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	transition: ease-in .2s;
+}
+
+.loader-gif {
+	width: 75px;
+	height: 75px;
+	z-index: 1001;
+	background-image: url("./images/Pulse-1s-200px.gif");
+	background-size: contain;
 }
