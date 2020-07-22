@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import { useAuth } from '../contexts/Auth'
 
 /*
 	TODO
-	- Adicionar símbolo de carregando...
 	- Mensagens de erro e sucesso
 
  */
@@ -24,7 +25,6 @@ function LoginComponent(props) {
 	return (
 		<div className="form-signin">
 			<div className="default-container login-container">
-				<Loader isLoading={ isLoading }/>
 				<form
 					className="text-center"
 					id="loginContainer"
@@ -33,7 +33,7 @@ function LoginComponent(props) {
 					<div className="header bg-dark-custom mb-4 gradient-dark">
 						<p className="h3 font-weight-bold ">Entrar</p>
 					</div>
-					<label htmlFor="inputEmail" className="sr-only">Usuário</label>
+					<label htmlFor="inputEmail" className="sr-only">Email</label>
 					<input
 						type="text"
 						className="form-control"
@@ -47,7 +47,7 @@ function LoginComponent(props) {
 					<input
 						type="password"
 						className="form-control"
-						placeholder="Password"
+						placeholder="Senha"
 						name="password"
 						onChange={ handleChange }
 						value={ credentials.password }
@@ -58,6 +58,7 @@ function LoginComponent(props) {
 						className="btn btn-lg btn-custom btn-block mt-3"
 						id="btnEntrar"
 						value="Entrar"
+						disabled={ isLoading }
 					/>
 					<hr className="my-3 color-light"></hr>
 					<p className="small">Ainda não é cadastrado?</p>
@@ -71,22 +72,26 @@ function LoginComponent(props) {
 export function LoginScreen(props) {
 
 	const auth = useAuth();
+	const history = useHistory();
 	const [credentials, setCredentials] = useState({email: '', password: ''});
 	const [isLoading, setIsLoading] = useState(false);
+	const [isMounted, setIsMounted] = useState();
 
-	// Consider using useEffet hook to handle dismount
+	useEffect(() => {
+		setIsMounted(true);
+		return setIsMounted(false);
+	});
+
 	const handleSubmit = e => {
 		e.preventDefault();
 
 		if (!isLoading) {
 			setIsLoading(true);
 
-			setTimeout(
-				loginAsync()
-					.then(() => {
-						setIsLoading(false);
-					})
-			, 2000);
+			loginAsync()
+				.then(() => {
+					if (isMounted) {setIsLoading(false)};
+				})
 		}
 	}
 
@@ -113,7 +118,7 @@ export function LoginScreen(props) {
 				// Alerta de erro
 				console.log("Erro: " + data.erro);
 			} else {
-				auth.login(data.token);
+				auth.login(data.token, () => { history.push("/home") });
 			}
 		} catch(error)  {
 			console.log("Erro: " + error);

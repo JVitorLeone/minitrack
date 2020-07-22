@@ -1,52 +1,45 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
-const toolItems = [
-	{
-		id: 1,
-		iconName: "home",
-		url: "#1",
-	},
-	{
-		id: 2,
-		iconName: "message-square",
-		url: "#2",
-	},
-	{
-		id: 3,
-		iconName: "tool",
-		url: "#3",
-	},
-	{
-		id: 4,
-		iconName: "log-out",
-		url: "#4",
-	},
-];
+import { useAuth } from '../contexts/Auth';
 
-function ToolBar(props)  {
+/*
+	TODO
+		- 	Adicionar ícones
+*/
 
-	if (Array.isArray(toolItems) && toolItems.length) {
-		const toolBarItems = toolItems.map((item) => {
-			return (
-				<ToolItem
-					key={item.id}
-					url={item.url}
-					isActive={this.props.activePage === item.id}
-					onClick={() => this.props.onClick(item.id)}
-					iconName={item.iconName}
-				/>
-			);
-		});
+function ToolBar(props) {
+	const auth = useAuth();
+	const history = useHistory();
 
-		return (
-			<div className="sidebar">
-				{toolBarItems}
-			</div>
-		);
-	} else {
-		return null;
-	}
-
+	return (
+		<div className="sidebar">
+			<ToolItem
+				key={1}
+				url={"#1"}
+				isActive={true}
+				onClick={() => { }}
+			/>
+			<ToolItem
+				key={2}
+				url={"#2"}
+				isActive={ false }
+				onClick={() => { }}
+			/>
+			<ToolItem
+				key={2}
+				url={"#2"}
+				isActive={ false }
+				onClick={() => { }}
+			/>
+			<ToolItem
+				key={3}
+				url={"#3"}
+				isActive={false}
+				onClick={ () => auth.logout(() => { history.push("/teste") }) }
+			/>
+		</div>
+	);
 }
 
 class ToolItem extends React.Component {
@@ -62,8 +55,7 @@ class ToolItem extends React.Component {
 					<span
 						data-feather="home"
 						className="icon-light big-icon"
-					>
-					</span>
+					></span>
 				</button>
 			</div>
 		);

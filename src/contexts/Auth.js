@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { createTokenProvider } from './Token'
 
 const AuthContext = React.createContext()
@@ -7,14 +7,16 @@ function AuthProvider(props) {
 	const tokenProvider = createTokenProvider();
 	const [isLoggedIn, setIsLoggedIn] = useState(tokenProvider.isLoggedIn());
 
-	const login = token => {
+	const login = (token, callback) => {
 		tokenProvider.setToken(token);
 		setIsLoggedIn(true);
+		callback();
 	};
 
-	const logout = () => {
+	const logout = callback => {
 		tokenProvider.setToken(null);
 		setIsLoggedIn(false);
+		callback();
 	};
 
 	const authFetch = async (input, init) => {
