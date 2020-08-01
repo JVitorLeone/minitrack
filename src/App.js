@@ -9,6 +9,7 @@ import {
 
 import { useUser } from './contexts/User'
 import { LoginScreen } from './components/Login'
+import { SignupScreen } from './components/Signup'
 import { HomeScreen } from './components/Home'
 import { useAuth } from './contexts/Auth'
 
@@ -24,6 +25,7 @@ function App(props) {
 				<AuthRoute path="/home" exact={true} component={ HomeScreen } />
 				<Route path="/teste" exact={true} component={ teste } />
 				<Route path="/login" component={ LoginScreen } />
+				<Route path="/signup" component={ SignupScreen } />
 				<Route path='*' />
 			</Switch>
 		</ BrowserRouter>

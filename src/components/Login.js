@@ -20,7 +20,7 @@ function Loader(props) {
 
 function LoginComponent(props) {
 
-	const { credentials, isLoading, handleSubmit, handleChange } = props;
+	const { credentials, isLoading, handleSubmit, handleChange, signUp } = props;
 
 	return (
 		<div className="form-signin">
@@ -60,10 +60,16 @@ function LoginComponent(props) {
 						value="Entrar"
 						disabled={ isLoading }
 					/>
-					<hr className="my-3 color-light"></hr>
-					<p className="small">Ainda não é cadastrado?</p>
-					<a className="btn btn-outline-custom" id="btnCadastro" href="#">Cadastrar</a>
 				</form>
+				<hr className="my-3 color-light"></hr>
+				<p className="small">Ainda não é cadastrado?</p>
+				<button
+					className="btn btn-outline-custom"
+					id="btnCadastro"
+					onClick={ signUp }
+				>
+					Cadastrar
+				</button>
 			</div>
 		</div>
 	)
@@ -103,6 +109,10 @@ export function LoginScreen(props) {
 		}));
 	}
 
+	const signUp = () => {
+		history.push("/signup");
+	}
+
 	const loginAsync = async () => {
 		const options = {
 			method: "POST",
@@ -131,6 +141,7 @@ export function LoginScreen(props) {
 			handleChange={ handleChange }
 			handleSubmit={ handleSubmit }
 			isLoading={ isLoading }
+			signUp={ signUp }
 		/>
 	)
 }
