@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
 	BrowserRouter,
 	Switch,
 	Route,
-	useHistory,
 	Redirect
 } from 'react-router-dom';
 
@@ -12,6 +11,8 @@ import { LoginScreen } from './components/Login'
 import { SignupScreen } from './components/Signup'
 import { HomeScreen } from './components/Home'
 import { useAuth } from './contexts/Auth'
+
+import { GlobalStyle } from './style/GlobalStyles';
 
 import './style/bootstrap.css';
 import './style/custom.css';
@@ -28,6 +29,7 @@ function App(props) {
 				<Route path="/signup" component={ SignupScreen } />
 				<Route path='*' />
 			</Switch>
+			<GlobalStyle/>
 		</ BrowserRouter>
 	);
 }
