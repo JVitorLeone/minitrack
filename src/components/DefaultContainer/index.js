@@ -4,7 +4,7 @@ import { Container, Header } from './styles';
 
 function DefaultContainer(props) {
 	return (
-		<Container>
+		<Container {...props}>
 			{ props.children }
 		</Container>
 	);
@@ -12,7 +12,7 @@ function DefaultContainer(props) {
 
 function DefaultContainerWithHeader(props) {
 	return (
-		<Container>
+		<Container {...props}>
 			<Header>{ props.title }</Header>
 			{ props.children }
 		</Container>

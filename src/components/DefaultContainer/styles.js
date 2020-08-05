@@ -6,7 +6,7 @@ export const Container = styled.div`
 	overflow: hidden;
 
 	width: 100%;
-	max-width: 700px;
+	max-width: ${props => props.max_width + "px"};
 
 	border: 0.5px solid lightgray;
 	border-radius: 12px;

@@ -38,10 +38,6 @@ export const Label = styled.label`
 	margin-bottom: 4px;
 `;
 
-export const Input = styled.input`
-	background: ${ props => props.invalid ? '' : '' };
-`;
-
 export const FeedBack = styled.div`
 	font-size: 14px;
 	color: red;

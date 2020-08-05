@@ -13,9 +13,9 @@ import {
 	FormWrapper,
 	InputCouple,
 	Label,
-	Input,
 	FeedBack
 } from './styles';
+import { Button, Input } from '../Form';
 
 function SignupComponent(props) {
 
@@ -25,7 +25,9 @@ function SignupComponent(props) {
 
 	return (
 		<Container>
-			<DefaultContainerWithHeader title={"Cadastre-se"}>
+			<DefaultContainerWithHeader
+				title={"Cadastre-se"}
+				max_width={ 500 } >
 				<FormWrapper>
 					{
 						inputs.map(input => {
@@ -45,9 +47,8 @@ function SignupComponent(props) {
 							);
 						})
 					}
-					<input
+					<Button
 						className="btn btn-lg btn-custom btn-block mt-4"
-						type="submit"
 						id="btnCadastrar"
 						value="Confirmar"
 						disabled={ isLoading }
