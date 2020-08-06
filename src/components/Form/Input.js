@@ -3,9 +3,7 @@ import styled from 'styled-components';
 
 function Input(props) {
 	return (
-		<InputStyled {...props}>
-			{ props.value }
-		</InputStyled>
+		<InputStyled {...props} />
 	)
 }
 

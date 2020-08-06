@@ -8,18 +8,19 @@ import { useHistory } from 'react-router-dom';
  */
 
 import { DefaultContainerWithHeader } from '../DefaultContainer';
+import { Container } from './styles';
 import {
-	Container,
+	Button,
+	Input,
 	FormWrapper,
 	InputCouple,
 	Label,
 	FeedBack
-} from './styles';
-import { Button, Input } from '../Form';
+} from '../Form';
 
 function SignupComponent(props) {
 
-	const { userInputs, isLoading, handleChange, login } = props;
+	const { userInputs, isLoading, handleChange, handleSubmit,login } = props;
 
 	const inputs = Object.values(userInputs);
 
@@ -28,7 +29,7 @@ function SignupComponent(props) {
 			<DefaultContainerWithHeader
 				title={"Cadastre-se"}
 				max_width={ 500 } >
-				<FormWrapper>
+				<FormWrapper onSubmit={ handleSubmit }>
 					{
 						inputs.map(input => {
 							return (
@@ -48,10 +49,10 @@ function SignupComponent(props) {
 						})
 					}
 					<Button
-						className="btn btn-lg btn-custom btn-block mt-4"
 						id="btnCadastrar"
 						value="Confirmar"
 						disabled={ isLoading }
+						type="Submit"
 					/>
 				</FormWrapper>
 			</DefaultContainerWithHeader>
@@ -124,21 +125,54 @@ function SignupScreen(props) {
 	}
 
 	const handleSubmit = e => {
-		// TODO
 		e.preventDefault();
 
 		if (!isLoading) {
 			setIsLoading(true);
 
-			/* loginAsync()
+			postUserData()
 				.then(() => {
 					if (isMounted) {setIsLoading(false)};
-				}) */
+				})
 		}
 	}
 
 	const login = () => {
 		history.push("/login")
+	}
+
+	const postUserData = async() => {
+		const options = {
+			method: "POST",
+			headers: new Headers({'content-type': 'application/json'}),
+			body: parsedUserData(),
+		};
+
+		console.log(parsedUserData());
+
+		try {
+			let response = await fetch('/api/signup/', options);
+			let data = await response.json();
+
+			if (data.erro) {
+				// Alerta de erro
+				console.log("Erro: " + data.erro);
+			} else {
+				console.log("Sucesso meu parça");
+			}
+		} catch(error)  {
+			console.log("Erro: " + error);
+		}
+	}
+
+	function parsedUserData() {
+		let filteredData = {
+			name: userData.name.val,
+			email: userData.email.val,
+			password: userData.password.val
+		}
+
+		return JSON.stringify(filteredData);
 	}
 
 	function mask(value, type) {
@@ -149,9 +183,9 @@ function SignupScreen(props) {
 	return (
 		<SignupComponent
 			userInputs={ userData }
-			handleChange={ handleChange }
-			// handleSubmit={ handleSubmit }
 			isLoading={ isLoading }
+			handleChange={ handleChange }
+			handleSubmit={ handleSubmit }
 			login={ login }
 		/>
 	)
