@@ -148,10 +148,8 @@ function SignupScreen(props) {
 			body: parsedUserData(),
 		};
 
-		console.log(parsedUserData());
-
 		try {
-			let response = await fetch('/api/signup/', options);
+			let response = await fetch('/user/', options);
 			let data = await response.json();
 
 			if (data.erro) {

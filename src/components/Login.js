@@ -121,7 +121,7 @@ export function LoginScreen(props) {
 		};
 
 		try {
-			let response = await fetch('/api/loginJWT/', options);
+			let response = await fetch('/user/login/', options);
 			let data = await response.json();
 
 			if (data.erro) {
